@@ -1,12 +1,7 @@
 <template>
   <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <router-link class="navbar-item" :to="{ name: 'home', params: {quote: 'hey'} }">
-            <img src="https://bulma.io/images/bulma-logo.png" alt="Logo"
-                 width="112"
-                 height="28">
-            
-        </router-link>
+      <a href="/" class="navbar-item">Internal Management Tool</a>
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu">
@@ -14,7 +9,7 @@
         <div class="navbar-item">
           <div class="buttons">
             <button class="button is-primary" @click="login" v-if="!isLoggedIn">
-              <strong>Sign up with Google</strong>
+              <strong>Login</strong>
             </button>
             <button class="button is-light" @click="logout" v-if="isLoggedIn">
               <strong>Logout</strong>
@@ -27,10 +22,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  methods: mapActions("auth", ["login", "logout"]),
+  methods: {
+    login() {
+      this.$router.replace("login");
+    },
+  },
   computed: mapGetters("auth", ["isLoggedIn"]),
 };
 </script>

@@ -11,16 +11,16 @@ const actions = {
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
         const result = await signInWithPopup(auth, provider);
-        console.log(result.user);
+
         const { displayName, email, uid } = result.user;
         const user = {
-            displayName,
+            name: displayName,
             email,
             uid,
-            created_at: null
+            created_at: Math.floor(Date.now() / 1000)
         };
         console.log(user);
-        context.commit('login', user);
+        context.commit('setUser', user);
 
 
     },
@@ -45,6 +45,9 @@ const mutations = {
 const getters = {
     isLoggedIn(state) {
         return state.isLoggedIn;
+    },
+    getUser(state) {
+        return state.user;
     }
 }
 

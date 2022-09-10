@@ -1,7 +1,8 @@
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword /*, signInWithPopup, GoogleAuthProvider*/
+    signInWithEmailAndPassword, /*, signInWithPopup, GoogleAuthProvider*/
+    signOut
 } from "firebase/auth";
 //import { db, collection, addDoc } from '@/db';
 //import { _ } from "@/db";
@@ -67,7 +68,7 @@ const actions = {
     },
     async logout(context) {
         const auth = getAuth();
-        auth.signOut();
+        signOut(auth).then(console.log("Logout succesfull"));
         context.commit('logout');
     }
 }

@@ -1,9 +1,5 @@
-import {
-  createRouter,
-  createWebHashHistory
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
-import LoginPage from '@/components/LoginPage.vue'
 
 const routes = [{
     path: '/',
@@ -13,12 +9,17 @@ const routes = [{
   {
     path: '/login',
     name: 'login',
-    component: LoginPage
+    component: () => import('@/components/user/LoginPage.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('@/components/RegisterPage.vue')
+    component: () => import('@/components/user/RegisterPage.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/components/user/ProfilePage.vue')
   }
 ]
 

@@ -35,7 +35,7 @@
       <p>Don't you have an account? Register <router-link to="/register">here</router-link></p>
       <div class="field">
         <div class="control">
-          <button class="button is-link">Submit</button>
+          <button class="button is-primary">Submit</button>
         </div>
       </div>
     </form>
@@ -78,8 +78,10 @@ export default {
         invalidPasswordMessage.value = "Password cannot be empty";
         invalidPassword.value = true;
       }
-      console.log(store);
-      //store.dispatch("login");
+      store.dispatch("auth/login", {
+        email: username.value,
+        password: password.value
+      });
     }
 
     return {

@@ -8,7 +8,7 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
-    const user = store.getters('auth/getUser');
+    const user = store.getters('auth/getProfile');
     console.log(user);
   },
 };

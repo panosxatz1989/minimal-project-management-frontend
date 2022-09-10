@@ -1,102 +1,78 @@
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword, /*, signInWithPopup, GoogleAuthProvider*/
-    signOut
+    signInWithEmailAndPassword,
+    signOut,
 } from "firebase/auth";
-//import { db, collection, addDoc } from '@/db';
-//import { _ } from "@/db";
 import firebase from "@/firebase";
-import {
-    getFirestore,
-    collection,
-    addDoc
-} from "firebase/firestore";
+import { useRouter } from "vue-router";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 const db = getFirestore(firebase);
 
 const state = {
-    user: {},
-    isLoggedIn: false
-}
+    profile: {},
+    isLoggedIn: false,
+};
 
 const actions = {
-    async signUp(context, {
-        email,
-        password
-    }) {
+    async signUp(context, { email, password, username, name }) {
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(userCredential => {
-                const user = userCredential.user;
-                console.log(user);
-            }).catch(error => console.log(error.code));
-        context.commit('setUser', {
-            email,
-            password
-        });
-    },
-    async login(context, {
-        email,
-        password
-    }) {
-        // const provider = new GoogleAuthProvider();
-        // const auth = getAuth();
-        // const result = await signInWithPopup(auth, provider);
+        let newUser = {};
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then(userCredential => userCredential.user)
+            .then(data => newUser = data)
+            .catch(error => console.log(error.code));
 
-        // const { displayName, email, uid } = result.user;
-        // const user = {
-        //     name: displayName,
-        //     email,
-        //     uid,
-        //     created_at: Math.floor(Date.now() / 1000)
-        // };
+            const profile = {
+                id: newUser.uid,
+                email: newUser.email,
+                username,
+                name,
+            };
+            addDoc(collection(db, "users"), profile);
+            context.commit("setProfile", profile);
+    },
+    async login(context, { email, password }) {
         const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then(userCredential => {
-                const user = userCredential.user;
-                console.log(user);
-            }).catch(error => console.log(error.code));
-        context.commit('setUser', {
-            email,
-            password
-        });
-        const newUser = await addDoc(collection(db, 'users'), {
-            email,
-            password
-        });
-        console.log("Document written with ID: ", newUser.id);
+        let loggedUser = {};
+        await signInWithEmailAndPassword(auth, email, password)
+            .then(userCredential => userCredential.user)
+            .then(data => loggedUser = data)
+            .catch(error => console.log(error.code));
+        
+        context.commit("setUser", loggedUser);
     },
     async logout(context) {
         const auth = getAuth();
-        signOut(auth).then(console.log("Logout succesfull"));
-        context.commit('logout');
-    }
-}
+        signOut(auth).then(useRouter.push('/'));
+        context.commit("logout");
+    },
+};
 
 const mutations = {
-    setUser(state, user) {
-        state.user = user;
+    setProfile(state, user) {
+        state.profile = user;
         state.isLoggedIn = true;
     },
     logout(state) {
-        state.user = {};
+        state.profile = {};
         state.isLoggedIn = false;
-    }
-}
+    },
+};
 
 const getters = {
     isLoggedIn(state) {
         return state.isLoggedIn;
     },
-    getUser(state) {
-        return state.user;
-    }
-}
+    getProfile(state) {
+        return state.profile;
+    },
+};
 
 export default {
     namespaced: true,
     state,
     actions,
     mutations,
-    getters
-}
+    getters,
+};

@@ -8,12 +8,17 @@ const state = {
 
 const actions = {
     async loadProjects(context) {
-        const projects = doc(db, 'projects/pLIYu6R9f3UjA3Yao4G8');
-        context.state.projects.push((await getDoc(projects)).data());
+        const projectsRef = doc(db, 'projects/pLIYu6R9f3UjA3Yao4G8');
+        const projects = (await getDoc(projectsRef)).data();
+        context.commit('fillProjects', projects);
     }
 };
 
-const mutations = {};
+const mutations = {
+    fillProjects(state, projects) {
+        state.projects.push(projects);
+    }
+};
 
 const getters = {
     getProjects(state) {

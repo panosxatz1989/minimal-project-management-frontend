@@ -1,13 +1,7 @@
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-} from "firebase/auth";
-import firebase from "@/firebase";
-import { useRouter } from "vue-router";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-const db = getFirestore(firebase);
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useRouter } from 'vue-router';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '@/firebase';
 
 const state = {
     profile: {},
@@ -23,14 +17,14 @@ const actions = {
             .then(data => newUser = data)
             .catch(error => console.log(error.code));
 
-            const profile = {
-                id: newUser.uid,
-                email: newUser.email,
-                username,
-                name,
-            };
-            addDoc(collection(db, "users"), profile);
-            context.commit("setProfile", profile);
+        const profile = {
+            id: newUser.uid,
+            email: newUser.email,
+            username,
+            name,
+        };
+        addDoc(collection(db, "users"), profile);
+        context.commit("setProfile", profile);
     },
     async login(context, { email, password }) {
         const auth = getAuth();
@@ -39,12 +33,12 @@ const actions = {
             .then(userCredential => userCredential.user)
             .then(data => loggedUser = data)
             .catch(error => console.log(error.code));
-        
+
         context.commit("setUser", loggedUser);
     },
     async logout(context) {
         const auth = getAuth();
-        signOut(auth).then(useRouter.push('/'));
+        await signOut(auth).then(useRouter.push('/'));
         context.commit("logout");
     },
 };

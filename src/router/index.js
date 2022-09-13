@@ -25,14 +25,14 @@ const routes = [
     {
         path: "/projects",
         name: "projects",
-        component: () => import("@/components/projects/ProjectList.vue")
+        component: () => import("@/components/projects/ProjectList.vue"),
     },
     {
         path: "/projects/:projectId",
         name: "projectDetails",
         component: () => import("@/components/projects/ProjectDetails.vue"),
-        props: true
-    }
+        props: true,
+    },
 ];
 
 const router = createRouter({

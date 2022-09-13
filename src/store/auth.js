@@ -1,7 +1,11 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useRouter } from 'vue-router';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '@/firebase';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+} from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const state = {
     profile: {},
@@ -13,9 +17,9 @@ const actions = {
         const auth = getAuth();
         let newUser = {};
         await createUserWithEmailAndPassword(auth, email, password)
-            .then(userCredential => userCredential.user)
-            .then(data => newUser = data)
-            .catch(error => console.log(error.code));
+            .then((userCredential) => userCredential.user)
+            .then((data) => (newUser = data))
+            .catch((error) => console.log(error.code));
 
         const profile = {
             id: newUser.uid,
@@ -29,22 +33,28 @@ const actions = {
     async login(context, { email, password }) {
         const auth = getAuth();
         let loggedUser = {};
+        let error = "";
         await signInWithEmailAndPassword(auth, email, password)
-            .then(userCredential => userCredential.user)
-            .then(data => loggedUser = data)
-            .catch(error => console.log(error.code));
-
-        context.commit("setUser", loggedUser);
+            .then((userCredential) => userCredential.user)
+            .then((data) => (loggedUser = data))
+            .catch((returnedError) => {
+                error = returnedError;
+            });
+        if (error) {
+            return;
+        }
+        context.commit("setProfile", loggedUser);
     },
     async logout(context) {
         const auth = getAuth();
-        await signOut(auth).then(useRouter.push('/'));
+        await signOut(auth);
         context.commit("logout");
     },
 };
 
 const mutations = {
     setProfile(state, user) {
+        console.log(user);
         state.profile = user;
         state.isLoggedIn = true;
     },

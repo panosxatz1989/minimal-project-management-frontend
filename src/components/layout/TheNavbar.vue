@@ -93,3 +93,8 @@ export default {
     },
 };
 </script>
+<style scoped>
+sup {
+    left: 0.2em;
+}
+</style>

@@ -5,7 +5,7 @@ import store from "@/store/index";
 const routes = [
     {
         path: "/",
-        redirect: "/login",
+        redirect: '/login',
         name: "home",
         component: HomePage,
     },
@@ -51,7 +51,7 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(function (to, _, next) {
+router.beforeEach(function (to, from, next) {
     const isLogged = store.getters['auth/isLoggedIn'];
     if (to.name !== 'login' && to.meta.requiresAuth && !isLogged) {
         next('/login')

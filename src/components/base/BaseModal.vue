@@ -1,4 +1,4 @@
-<template>    
+<template>
     <div
         class="modal fade"
         id="exampleModal"
@@ -19,16 +19,39 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="modal-body">...</div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="projectName"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea
+                            class="form-control"
+                            cols="30"
+                            rows="10"
+                            v-model="projectDescription"
+                        ></textarea>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button
                         type="button"
                         class="btn btn-secondary"
                         data-bs-dismiss="modal"
+                        id="dismiss-button"
                     >
                         Close
                     </button>
-                    <button type="button" class="btn btn-primary">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="addProject"
+                    >
                         Save changes
                     </button>
                 </div>
@@ -38,5 +61,27 @@
 </template>
 
 <script>
-export default {};
+import { ref } from "vue";
+
+export default {
+    emits: ["addProject"],
+    props: ["hideModal"],
+    setup(props, context) {
+        const projectName = ref("");
+        const projectDescription = ref("");
+
+        function addProject() {
+            context.emit("addProject", {
+                name: projectName.value,
+                description: projectDescription.value,
+            });
+        }
+
+        return {
+            addProject,
+            projectName,
+            projectDescription,
+        };
+    },
+};
 </script>

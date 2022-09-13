@@ -28,83 +28,44 @@
                             to="/projects"
                             >Details</router-link
                         >
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            Modal title
-                        </h5>
                         <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                v-model="projectName"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea
-                                class="form-control"
-                                cols="30"
-                                rows="10"
-                                v-model="projectDescription"
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
+                            class="btn btn-danger text-white float-end"
+                            @click="deleteProject(project.id)"
                         >
-                            Close
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="addProject"
-                        >
-                            Save changes
+                            Delete
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+        <base-modal
+            @addProject="addProject"
+            :hideModal="hideModal"
+        ></base-modal>
     </div>
 </template>
 
 <script>
 import { onMounted, ref } from "vue";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase";
+import BaseModal from "@/components/base/BaseModal.vue";
 
 export default {
     setup() {
         const projects = ref([]);
-        const projectName = ref("");
-        const projectDescription = ref("");
-        function addProject() {
-            console.log(projectName.value, projectDescription.value);
+        const hideModal = ref(false);
+
+        async function addProject(data) {
+            await addDoc(collection(db, "projects"), {
+                name: data.name,
+                description: data.description,
+            });
+            hideModal.value = true;
+        }
+
+        function deleteProject(id) {
+            deleteDoc(doc(db, 'projects', id))
         }
 
         onMounted(async () => {
@@ -127,10 +88,13 @@ export default {
 
         return {
             projects,
-            projectName,
-            projectDescription,
             addProject,
+            hideModal,
+            deleteProject
         };
+    },
+    components: {
+        BaseModal,
     },
 };
 </script>

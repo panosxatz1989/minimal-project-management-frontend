@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
 } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 
 const state = {
@@ -27,7 +27,8 @@ const actions = {
             username,
             name,
         };
-        addDoc(collection(db, "users"), profile);
+        const newProfile = await addDoc(collection(db, "users"), profile);
+        profile.uid = newProfile.id;
         context.commit("setProfile", profile);
     },
     async login(context, { email, password }) {
@@ -43,6 +44,15 @@ const actions = {
         if (error) {
             return;
         }
+
+        const q = query(
+            collection(db, "users"),
+            where("email", "==", loggedUser.email)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            loggedUser = doc.data();
+        });
         context.commit("setProfile", loggedUser);
     },
     async logout(context) {
@@ -54,7 +64,6 @@ const actions = {
 
 const mutations = {
     setProfile(state, user) {
-        console.log(user);
         state.profile = user;
         state.isLoggedIn = true;
     },

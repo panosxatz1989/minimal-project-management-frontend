@@ -1,120 +1,134 @@
 <template>
-    <form @submit.prevent="register">
-        <div class="col-lg-6 mx-auto">
-            <div class="mb-3">
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-lg-6 mx-auto">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-center">Register Form</h2>
+            <form @submit.prevent="register">
+              <div class="mb-3">
                 <label class="label">Username</label>
                 <input
-                    type="text"
-                    class="form-control"
-                    v-model="user.username"
-                    placeholder="e.g. nickcoleman1989"
+                  type="text"
+                  class="form-control"
+                  v-model="user.username"
+                  placeholder="e.g. nickcoleman1989"
+                  required
                 />
-            </div>
-            <div class="mb-3">
+              </div>
+              <div class="mb-3">
                 <label class="label">Email</label>
                 <input
-                    type="email"
-                    class="form-control"
-                    v-model="user.email"
-                    placeholder="example@domain.com"
+                  type="email"
+                  class="form-control"
+                  v-model="user.email"
+                  placeholder="example@domain.com"
+                  required
                 />
-            </div>
-            <div class="mb-3">
+              </div>
+              <div class="mb-3">
                 <label class="label">Password</label>
                 <input
-                    type="password"
-                    class="form-control"
-                    v-model="user.password"
-                    @focus="removeErrors"
+                  type="password"
+                  class="form-control"
+                  v-model="user.password"
+                  @focus="removeErrors"
+                  required
                 />
-            </div>
-            <div class="mb-3">
+              </div>
+              <div class="mb-3">
                 <label class="label">Repeat Password</label>
                 <input
-                    type="password"
-                    class="form-control"
-                    v-model="passwordMatch"
-                    @focus="removeErrors"
+                  type="password"
+                  class="form-control"
+                  v-model="passwordMatch"
+                  @focus="removeErrors"
+                  required
                 />
-            </div>
-            <div class="mb-3">
+              </div>
+              <div class="mb-3">
                 <label class="label">Name</label>
                 <input
-                    type="text"
-                    class="form-control"
-                    v-model="user.name"
-                    placeholder="e.g. Nick Coleman"
+                  type="text"
+                  class="form-control"
+                  v-model="user.name"
+                  placeholder="e.g. Nick Coleman"
                 />
-            </div>
-            <article
-                class="message is-danger"
-                v-for="error in errors"
-                :key="error"
-            >
-                <div class="message-body">
-                    {{ error }}
-                </div>
-            </article>
-            <div class="mb-3">
-                <button class="btn btn-primary">Register</button>
-            </div>
+              </div>
+              <p v-if="registerError" class="text-danger">
+                {{ registerError }}
+              </p>
+              <button class="btn btn-primary">Register</button>
+            </form>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
-    setup() {
-        const user = reactive({
-            username: "",
-            email: "",
-            password: "",
-            name: "",
-        });
-        const passwordMatch = ref("");
-        const errors = ref([]);
-        const store = useStore();
+  setup() {
+    const user = reactive({
+      username: "",
+      email: "",
+      password: "",
+      name: "",
+    });
+    const passwordMatch = ref("");
+    const errors = ref([]);
+    const store = useStore();
+    const router = useRouter();
+    const registerError = ref("");
 
-        function removeErrors() {
-            errors.value = [];
+    function removeErrors() {
+      errors.value = [];
+    }
+
+    function validate() {
+      removeErrors();
+      if (user.password !== passwordMatch.value) {
+        errors.value.push("Password fields do not match");
+      }
+
+      if (errors.value.length > 0) {
+        return false;
+      }
+
+      return true;
+    }
+
+    async function register() {
+      const isValid = validate();
+      if (isValid) {
+        try {
+          await store.dispatch("auth/signUp", {
+            email: user.email,
+            password: user.password,
+            name: user.name,
+            username: user.username,
+          });
+          router.push("/profile");
+        } catch (err) {
+          registerError.value = err.message;
         }
+      }
+    }
 
-        function validate() {
-            removeErrors();
-            if (user.password !== passwordMatch.value) {
-                errors.value.push("Password fields do not match");
-            }
-
-            if (errors.value.length > 0) {
-                return false;
-            }
-
-            return true;
-        }
-
-        function register() {
-            const isValid = validate();
-            if (isValid) {
-                store.dispatch("auth/signUp", {
-                    email: user.email,
-                    password: user.password,
-                    name: user.name,
-                    username: user.username,
-                });
-            }
-        }
-
-        return {
-            user,
-            passwordMatch,
-            errors,
-            register,
-            removeErrors,
-        };
-    },
+    return {
+      user,
+      passwordMatch,
+      errors,
+      registerError,
+      register,
+      removeErrors,
+    };
+  },
 };
 </script>
 

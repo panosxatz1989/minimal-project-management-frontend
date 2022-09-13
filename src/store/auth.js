@@ -19,7 +19,16 @@ const actions = {
         await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => userCredential.user)
             .then((data) => (newUser = data))
-            .catch((error) => console.log(error.code));
+            .catch((error) => {
+                const code = error.code
+                switch (code) {
+                    case 'auth/email-already-in-use':
+                        throw new Error('Email already taken')
+                    case 'auth/weak-password':
+                        throw new Error('Password is weak')
+                }
+                throw new Error(code)
+            });
 
         const profile = {
             id: newUser.uid,
@@ -34,16 +43,18 @@ const actions = {
     async login(context, { email, password }) {
         const auth = getAuth();
         let loggedUser = {};
-        let error = "";
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => userCredential.user)
             .then((data) => (loggedUser = data))
-            .catch((returnedError) => {
-                error = returnedError;
-            });
-        if (error) {
-            return;
-        }
+            .catch((error) => {
+                const code = error.code
+                switch (code) {
+                    case 'auth/wrong-password':
+                        throw new Error('Invalid credentials provided.')
+                    case 'auth/too-many-requests':
+                        throw new Error('Too many login requests attempted. Try again later.')
+                }                
+            })
 
         const q = query(
             collection(db, "users"),

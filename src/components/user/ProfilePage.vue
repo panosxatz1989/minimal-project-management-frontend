@@ -1,9 +1,10 @@
 <template>
-    <div class="container">
+    <div class="container mt-3">
         <div class="row">
             <div class="col-lg-6 mx-auto">
                 <div class="card">
                     <div class="card-body">
+                        <h2 class="text-center">Edit Profile</h2>
                         <div class="mb-3">
                             <label class="form-label">Username</label>
                             <input type="text" class="form-control" v-model="profile.username"/>

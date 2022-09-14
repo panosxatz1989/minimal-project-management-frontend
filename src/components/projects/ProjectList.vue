@@ -28,26 +28,31 @@
                             to="/projects"
                             >Details</router-link
                         >
-                        <button
+                        <!-- <button
                             class="btn btn-danger text-white float-end"
                             @click="deleteProject(project.id)"
                         >
                             Delete
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
         </div>
-        <base-modal
-            @addProject="addProject"
-            :hideModal="hideModal"
-        ></base-modal>
+        <base-modal @addProject="addProject" :hideModal="hideModal">
+            <template v-slot:header>Add New Project</template>
+        </base-modal>
     </div>
 </template>
 
 <script>
 import { onMounted, ref } from "vue";
-import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+    collection,
+    onSnapshot,
+    addDoc,
+    deleteDoc,
+    doc,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 import BaseModal from "@/components/base/BaseModal.vue";
 
@@ -65,7 +70,7 @@ export default {
         }
 
         function deleteProject(id) {
-            deleteDoc(doc(db, 'projects', id))
+            deleteDoc(doc(db, "projects", id));
         }
 
         onMounted(async () => {
@@ -90,7 +95,7 @@ export default {
             projects,
             addProject,
             hideModal,
-            deleteProject
+            deleteProject,
         };
     },
     components: {

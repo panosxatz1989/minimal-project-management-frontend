@@ -37,7 +37,7 @@
               </p>
               <p>
                 Don't you have an account? Register
-                <router-link to="/register">here</router-link>
+                <router-link to="/register">here</router-link>.
               </p>
               <button type="submit" class="btn btn-primary">Login</button>
             </form>
@@ -55,7 +55,7 @@ import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const username = ref("");
+    const username = ref("panosxatz.1989@gmail.com");
     const password = ref("");
     const invalidUsername = ref(false);
     const invalidPassword = ref(false);

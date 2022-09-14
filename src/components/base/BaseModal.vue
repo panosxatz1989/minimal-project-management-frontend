@@ -10,7 +10,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                        Modal title
+                        <slot name="header">Default Title</slot>
                     </h5>
                     <button
                         type="button"
@@ -33,25 +33,16 @@
                         <textarea
                             class="form-control"
                             cols="30"
-                            rows="10"
+                            rows="5"
                             v-model="projectDescription"
                         ></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                        id="dismiss-button"
-                    >
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" id="dismiss-button">
                         Close
                     </button>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="addProject"
-                    >
+                    <button class="btn btn-primary" data-bs-dismiss="modal" @click="addProject">
                         Save changes
                     </button>
                 </div>

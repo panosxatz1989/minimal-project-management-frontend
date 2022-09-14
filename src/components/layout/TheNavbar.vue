@@ -1,9 +1,15 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/"
-                >Internal Management Tool<sup>Beta</sup></a
-            >
+            <a class="navbar-brand" href="/">
+                {{ name }}
+                <sup
+                    >{{ step }}
+                    <sup>
+                        <small>{{ version }}</small>
+                    </sup>
+                </sup>
+            </a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -17,12 +23,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isLoggedIn">
                         <router-link class="nav-link" to="profile"
                             >Profile</router-link
                         >
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isLoggedIn">
                         <router-link class="nav-link" to="projects"
                             >Projects</router-link
                         >
@@ -57,14 +63,30 @@
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { db } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export default {
     setup() {
         const store = useStore();
         const router = useRouter();
+        const step = ref("");
+        const version = ref("");
+        const name = ref("");
+
         const isLoggedIn = computed(() => {
             return store.getters["auth/isLoggedIn"];
+        });
+
+        onMounted(async () => {
+            const docRef = doc(db, "config", "MTzuHLRdks5OHnLXk0nM");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                step.value = docSnap.data().step;
+                version.value = docSnap.data().version;
+                name.value = docSnap.data().name;
+            }
         });
 
         const profile = computed(() => {
@@ -89,12 +111,10 @@ export default {
             isLoggedIn,
             profile,
             register,
+            step,
+            version,
+            name,
         };
     },
 };
 </script>
-<style scoped>
-sup {
-    left: 0.2em;
-}
-</style>

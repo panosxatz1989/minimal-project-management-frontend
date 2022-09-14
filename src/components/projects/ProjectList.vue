@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-2">
                 <button
-                    class="btn btn-warning text-white"
+                    class="btn btn-warning text-white fw-bold"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                 >
@@ -12,11 +12,7 @@
             </div>
         </div>
         <div class="row">
-            <div
-                class="col-lg-6 g-3"
-                v-for="project in projects"
-                :key="project.id"
-            >
+            <div class="col-lg-6 g-3" v-for="project in projects" :key="project.id">
                 <div class="card">
                     <div class="card-header fw-bold">{{ project.name }}</div>
                     <div class="card-body">
@@ -24,22 +20,21 @@
                             {{ project.description }}
                         </p>
                         <router-link
-                            class="btn btn-info text-white"
-                            to="/projects"
+                            class="btn btn-info text-white fw-bold"
+                            :to="{
+                                name: 'projectDetails',
+                                params: {
+                                    projectId: project.id
+                                }
+                            }"
                             >Details</router-link
                         >
-                        <!-- <button
-                            class="btn btn-danger text-white float-end"
-                            @click="deleteProject(project.id)"
-                        >
-                            Delete
-                        </button> -->
                     </div>
                 </div>
             </div>
         </div>
         <base-modal @addProject="addProject" :hideModal="hideModal">
-            <template v-slot:header>Add New Project</template>
+            <template v-slot:header>Add New Project Form</template>
         </base-modal>
     </div>
 </template>
@@ -49,9 +44,7 @@ import { onMounted, ref } from "vue";
 import {
     collection,
     onSnapshot,
-    addDoc,
-    deleteDoc,
-    doc,
+    addDoc
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import BaseModal from "@/components/base/BaseModal.vue";
@@ -67,10 +60,6 @@ export default {
                 description: data.description,
             });
             hideModal.value = true;
-        }
-
-        function deleteProject(id) {
-            deleteDoc(doc(db, "projects", id));
         }
 
         onMounted(async () => {
@@ -94,8 +83,7 @@ export default {
         return {
             projects,
             addProject,
-            hideModal,
-            deleteProject,
+            hideModal
         };
     },
     components: {

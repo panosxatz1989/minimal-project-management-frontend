@@ -7,53 +7,78 @@
             <h2 class="text-center">Register Form</h2>
             <form @submit.prevent="register">
               <div class="mb-3">
-                <label class="label">Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="user.username"
-                  placeholder="e.g. nickcoleman1989"
-                  required
-                />
+                <label class="label">Name</label>
+                <div class="input-group">
+                  <span
+                    class="
+                      input-group-text
+                      fa fa-user
+                      register-icon
+                      border-end-0
+                    "
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control border-start-0"
+                    v-model="user.name"
+                    placeholder="e.g. Nick Coleman"
+                    required
+                  />
+                </div>
               </div>
               <div class="mb-3">
                 <label class="label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  v-model="user.email"
-                  placeholder="example@domain.com"
-                  required
-                />
+                <div class="input-group">
+                  <span
+                    class="
+                      input-group-text
+                      fa fa-envelope
+                      register-icon
+                      border-end-0
+                    "
+                  ></span>
+                  <input
+                    type="email"
+                    class="form-control border-start-0"
+                    v-model="user.email"
+                    placeholder="example@domain.com"
+                    required
+                  />
+                </div>
               </div>
               <div class="mb-3">
                 <label class="label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  v-model="user.password"
-                  @focus="removeErrors"
-                  required
-                />
+                <div class="input-group">
+                  <span
+                    class="
+                      input-group-text
+                      fas
+                      fa-key
+                      register-icon
+                      border-end-0
+                    "
+                  ></span>
+                  <input
+                    type="password"
+                    class="form-control border-start-0"
+                    v-model="user.password"
+                    @focus="removeErrors"
+                    required
+                  />
+                </div>
               </div>
               <div class="mb-3">
                 <label class="label">Repeat Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  v-model="passwordMatch"
-                  @focus="removeErrors"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="label">Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="user.name"
-                  placeholder="e.g. Nick Coleman"
-                />
+                <div class="input-group">
+                  <span class="input-group-text fas fa-repeat register-icon border-end-0"></span>
+                  <input
+                    type="password"
+                    class="form-control border-start-0"
+                    v-model="passwordMatch"
+                    @focus="removeErrors"
+                    required
+                  />
+                </div>
               </div>
               <p v-if="registerError" class="text-danger">
                 {{ registerError }}
@@ -75,7 +100,6 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const user = reactive({
-      username: "",
       email: "",
       password: "",
       name: "",
@@ -111,7 +135,6 @@ export default {
             email: user.email,
             password: user.password,
             name: user.name,
-            username: user.username,
           });
           router.push("/profile");
         } catch (err) {
@@ -132,4 +155,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.register-icon {
+  line-height: 1.5;
+  background-color: white;
+}
+</style>

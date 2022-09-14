@@ -8,26 +8,34 @@
             <form @submit.prevent="login">
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  :class="{ 'border-danger': invalidUsername }"
-                  v-model="username"
-                  @focus="removeErrors('username')"
-                />
+                <div class="input-group">
+                  <span class="input-group-text fa fa-envelope login-icon border-end-0"
+                  :class="{ 'border border-danger text-danger': invalidUsername }"></span>
+                  <input
+                    type="email"
+                    class="form-control border-start-0" 
+                    :class="{ 'border border-danger': invalidUsername }"                   
+                    v-model="username"
+                    @focus="removeErrors('username')"
+                  />
+                </div>
                 <p v-if="invalidUsername" class="text-danger">
                   {{ invalidUsernameMessage }}
                 </p>
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input
-                  class="form-control"
-                  :class="{ 'border-danger': invalidPassword }"
-                  type="password"
-                  v-model="password"
-                  @focus="removeErrors('password')"
-                />
+                <div class="input-group">
+                  <span class="input-group-text fas fa-key login-icon border-end-0"
+                  :class="{ 'border border-danger text-danger': invalidPassword }"></span>
+                  <input
+                    class="form-control border-start-0"
+                    :class="{ 'border border-danger': invalidPassword }"
+                    type="password"
+                    v-model="password"
+                    @focus="removeErrors('password')"
+                  />
+                </div>
                 <p v-if="invalidPassword" class="text-danger">
                   {{ invalidPasswordMessage }}
                 </p>
@@ -94,12 +102,11 @@ export default {
       }
 
       try {
-        await store
-          .dispatch("auth/login", {
-            email: username.value,
-            password: password.value,
-          });
-          router.push("/projects");
+        await store.dispatch("auth/login", {
+          email: username.value,
+          password: password.value,
+        });
+        router.push("/projects");
       } catch (err) {
         loginError.value = err.message;
       }
@@ -120,4 +127,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.login-icon {
+  line-height: 1.5;
+  background-color: white;
+}
+</style>

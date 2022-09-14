@@ -3,8 +3,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 {{ name }}
-                <sup
-                    >{{ step }}
+                <sup>{{ step }}
                     <sup>
                         <small>{{ version }}</small>
                     </sup>
@@ -24,36 +23,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item" v-if="isLoggedIn">
-                        <router-link class="nav-link" to="profile"
-                            >Profile</router-link
-                        >
+                        <router-link class="nav-link" to="/profile">Profile</router-link>
                     </li>
                     <li class="nav-item" v-if="isLoggedIn">
-                        <router-link class="nav-link" to="projects"
-                            >Projects</router-link
-                        >
+                        <router-link class="nav-link" to="/projects">Projects</router-link>
                     </li>
                 </ul>
-                <button
-                    class="btn btn-primary mx-2"
-                    @click="login"
-                    v-if="!isLoggedIn"
-                >
+                <button class="btn btn-primary mx-3 fw-bold" @click="login" v-if="!isLoggedIn">
                     Login
                 </button>
-                <button
-                    class="btn btn-success"
-                    @click="register"
-                    v-if="!isLoggedIn"
-                >
+                <button class="btn btn-success fw-bold" @click="register" v-if="!isLoggedIn">
                     Register
                 </button>
-                <button
-                    class="btn btn-danger"
-                    @click="logout"
-                    v-if="isLoggedIn"
-                >
-                    <strong>Logout</strong>
+                <button class="btn btn-danger fw-bold" @click="logout" v-if="isLoggedIn">
+                   Logout
                 </button>
             </div>
         </div>

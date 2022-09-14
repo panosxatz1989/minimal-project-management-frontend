@@ -1,11 +1,11 @@
 import {
-    getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
 } from "firebase/auth";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db, auth } from "@/firebase";
+import useError from "@/components/hooks/error";
 
 const state = {
     profile: {},
@@ -14,21 +14,11 @@ const state = {
 
 const actions = {
     async signUp(context, { email, password, username, name }) {
-        const auth = getAuth();
         let newUser = {};
         await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => userCredential.user)
             .then((data) => (newUser = data))
-            .catch((error) => {
-                const code = error.code
-                switch (code) {
-                    case 'auth/email-already-in-use':
-                        throw new Error('Email already taken')
-                    case 'auth/weak-password':
-                        throw new Error('Password is weak')
-                }
-                throw new Error(code)
-            });
+            .catch((error) => { throw new Error(useError(error.code)) });
 
         const profile = {
             id: newUser.uid,
@@ -41,25 +31,11 @@ const actions = {
         context.commit("setProfile", profile);
     },
     async login(context, { email, password }) {
-        const auth = getAuth();
-        let loggedUser = {};
-        await signInWithEmailAndPassword(auth, email, password)
+        let loggedUser =  await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => userCredential.user)
-            .then((data) => (loggedUser = data))
-            .catch((error) => {
-                const code = error.code
-                switch (code) {
-                    case 'auth/wrong-password':
-                        throw new Error('Invalid credentials provided.')
-                    case 'auth/too-many-requests':
-                        throw new Error('Too many login requests attempted. Try again later.')
-                }                
-            })
+            .catch((error) => { throw new Error(useError(error.code))})
 
-        const q = query(
-            collection(db, "users"),
-            where("email", "==", loggedUser.email)
-        );
+        const q = query(collection(db, "users"), where("email", "==", loggedUser.email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             loggedUser = doc.data();
@@ -67,7 +43,6 @@ const actions = {
         context.commit("setProfile", loggedUser);
     },
     async logout(context) {
-        const auth = getAuth();
         await signOut(auth);
         context.commit("logout");
     },

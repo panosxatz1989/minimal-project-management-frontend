@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-lg-6 mx-auto">
-        <div class="card">
+        <div class="card shadow">
           <div class="card-body">
             <h2 class="text-center">Register Form</h2>
             <form @submit.prevent="register">

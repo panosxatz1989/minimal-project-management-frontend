@@ -17,7 +17,7 @@
             >
             </textarea>
             <hr />
-            <button class="btn btn-danger" @click="deleteProject">
+            <button class="btn btn-danger float-end" @click="deleteProject">
               Delete
             </button>
           </div>

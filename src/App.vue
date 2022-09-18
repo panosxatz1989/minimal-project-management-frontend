@@ -12,3 +12,12 @@ export default {
   },
 };
 </script>
+<style>
+.btn-min-width {
+  min-width: 100px;
+}
+
+.text-justify {
+  text-align: justify;
+}
+</style>

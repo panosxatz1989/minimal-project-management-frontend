@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-lg-6 mx-auto">
-        <div class="card">
+        <div class="card shadow">
           <div class="card-body">
             <h2 class="text-center">Login Form</h2>
             <form @submit.prevent="login">
@@ -106,7 +106,7 @@ export default {
           email: username.value,
           password: password.value,
         });
-        router.push("/projects");
+        router.push("/");
       } catch (err) {
         loginError.value = err.message;
       }

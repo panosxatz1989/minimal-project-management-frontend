@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomePage from "@/components/HomePage.vue";
 import store from "@/store/index";
+import { auth } from "@/firebase";
 
 const routes = [
     {
@@ -11,11 +12,17 @@ const routes = [
     {
         path: "/login",
         name: "login",
+        meta: {
+            requiresAnauth: true
+        },
         component: () => import("@/components/user/LoginPage.vue"),
     },
     {
         path: "/register",
         name: "register",
+        meta: {
+            requiresAnauth: true
+        },
         component: () => import("@/components/user/RegisterPage.vue"),
     },
     {
@@ -52,11 +59,12 @@ const router = createRouter({
 
 router.beforeEach(function (to, from, next) {
     const isLogged = store.getters['auth/isLoggedIn'];
-    console.log(isLogged, to.name);
-    if (to.name !== 'login' && to.meta.requiresAuth && !isLogged) {
-        next('/login')
-    } else if (to.name === "home" && !isLogged) {
-        next('/login')
+    const currentUser = auth.currentUser;
+
+    if (to.name !== "login" && to.meta.requiresAuth && !currentUser && !isLogged) {
+        next('/login');
+    } else if ((to.name === "login" || to.name === "register") && currentUser && isLogged) {
+        next('/projects');
     } else {
         next();
     }

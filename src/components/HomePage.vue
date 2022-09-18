@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <button @click="toggle" class="btn btn-secondary mb-2">Toggle Different View</button>
     <div class="row" v-if="showInColumns">
-      <div class="col border-end">
+      <div class="col-lg-6 col-sm-12 border-end">
         <h4 class="font-monospace text-decoration-underline">
           Purpose of the app
         </h4>
@@ -34,7 +34,7 @@
           reassigned to the developer again.
         </p>
       </div>
-      <div class="col">
+      <div class="col-lg-6 col-sm-12">
         <h4 class="font-monospace text-decoration-underline">
           Tools &amp; Libraries used
         </h4>

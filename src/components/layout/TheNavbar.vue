@@ -1,14 +1,16 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <router-link class="navbar-brand" :to="{
+                name: 'home'
+            }">
                 {{ name }}
                 <sup>{{ step }}
                     <sup>
                         <small>{{ version }}</small>
                     </sup>
                 </sup>
-            </a>
+            </router-link>
             <button
                 class="navbar-toggler"
                 type="button"

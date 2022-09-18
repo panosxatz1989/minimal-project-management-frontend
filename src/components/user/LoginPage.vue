@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-3">
+  <div class="container mt-5">
     <div class="row">
       <div class="col-lg-6 mx-auto">
         <div class="card">
@@ -64,7 +64,7 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const username = ref("panosxatz.1989@gmail.com");
-    const password = ref("");
+    const password = ref("str@1989");
     const invalidUsername = ref(false);
     const invalidPassword = ref(false);
     const invalidUsernameMessage = ref("");

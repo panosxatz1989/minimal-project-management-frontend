@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-3">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-lg-6 mx-auto">
                 <div class="card">
@@ -53,7 +53,7 @@
                             </div>
                             <hr />
                             <div class="mt-3">
-                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-success">Update</button>
                             </div>
                         </form>
                     </div>

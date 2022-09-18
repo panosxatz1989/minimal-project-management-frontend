@@ -5,16 +5,26 @@
         <div class="card shadow">
           <div class="card-body">
             <h2 class="text-center">Login Form</h2>
+            <base-spinner v-if="showSpinner"></base-spinner>
             <form @submit.prevent="login">
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <div class="input-group">
-                  <span class="input-group-text fa fa-envelope login-icon border-end-0"
-                  :class="{ 'border border-danger text-danger': invalidUsername }"></span>
+                  <span
+                    class="
+                      input-group-text
+                      fa fa-envelope
+                      login-icon
+                      border-end-0
+                    "
+                    :class="{
+                      'border border-danger text-danger': invalidUsername,
+                    }"
+                  ></span>
                   <input
                     type="email"
-                    class="form-control border-start-0" 
-                    :class="{ 'border border-danger': invalidUsername }"                   
+                    class="form-control border-start-0"
+                    :class="{ 'border border-danger': invalidUsername }"
                     v-model="username"
                     @focus="removeErrors('username')"
                   />
@@ -26,8 +36,12 @@
               <div class="mb-3">
                 <label class="form-label">Password</label>
                 <div class="input-group">
-                  <span class="input-group-text fas fa-key login-icon border-end-0"
-                  :class="{ 'border border-danger text-danger': invalidPassword }"></span>
+                  <span
+                    class="input-group-text fas fa-key login-icon border-end-0"
+                    :class="{
+                      'border border-danger text-danger': invalidPassword,
+                    }"
+                  ></span>
                   <input
                     class="form-control border-start-0"
                     :class="{ 'border border-danger': invalidPassword }"
@@ -60,8 +74,12 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import BaseSpinner from "@/components/base/BaseSpinner.vue";
 
 export default {
+  components: {
+    BaseSpinner,
+  },
   setup() {
     const username = ref("panosxatz.1989@gmail.com");
     const password = ref("str@1989");
@@ -70,6 +88,7 @@ export default {
     const invalidUsernameMessage = ref("");
     const invalidPasswordMessage = ref("");
     const loginError = ref("");
+    const showSpinner = ref(false);
 
     const store = useStore();
     const router = useRouter();
@@ -84,9 +103,12 @@ export default {
         invalidPassword.value = "";
         invalidPasswordMessage.value = "";
       }
+
+      loginError.value = "";
     }
 
     async function login() {
+      showSpinner.value = true;
       if (username.value === "") {
         invalidUsernameMessage.value = "Username cannot be empty";
         invalidUsername.value = true;
@@ -98,6 +120,7 @@ export default {
       }
 
       if (invalidUsername.value || invalidPassword.value) {
+        showSpinner.value = false;
         return;
       }
 
@@ -109,10 +132,12 @@ export default {
         router.push("/");
       } catch (err) {
         loginError.value = err.message;
+        showSpinner.value = false;
       }
     }
 
     return {
+      showSpinner,
       username,
       password,
       invalidUsername,

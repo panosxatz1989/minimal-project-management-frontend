@@ -1,37 +1,26 @@
 <template>
   <div class="container mt-5">
-    <button @click="toggle" class="btn btn-secondary mb-2">Toggle Different View</button>
-    <div class="row" v-if="showInColumns">
+    <base-spinner v-if="showSpinner"></base-spinner>
+    <div class="row" v-if="!showSpinner">
+      <div class="col-lg-2">
+        <button @click="toggle" class="btn btn-secondary mb-2">
+          Toggle Different View
+        </button>
+      </div>
+    </div>
+    <div class="row" v-if="showInColumns && !showSpinner">
       <div class="col-lg-6 col-sm-12 border-end">
         <h4 class="font-monospace text-decoration-underline">
           Purpose of the app
         </h4>
         <p class="font-monospace text-justify">
-          This app was created by me (Panagiotis Chatziantoniou) for practice.
-          It's my first Vue project so go easy on me! The use of this app is for
-          demo purposes only. The initial problem was that in our organization
-          the issue management procedure was increasingly abandoned because of
-          the tool we used, which provided a poor UX and was quite bloated. So I
-          decided to create one tool that contains only the features we really
-          need with (IMHO) a better UX.
+          {{ purposeText }}
         </p>
         <h4 class="font-monospace text-decoration-underline">
           How the app works
         </h4>
         <p class="font-monospace text-justify">
-          First of all, it is (for the moment) designed to be used only by one
-          team. In order to use the app you must register with a valid email and
-          a password. Once you register, you can add your role you possess in
-          the team (Manager, Developer, Tester etc). Next step is to add all the
-          projects you want to manage with this app and assign roles to the
-          other users too. Each project has one Project Manager, one or many
-          Developers and Testers. After creating your first project feel free to
-          add tasks or issues to the project. Those can be assigned to
-          Developers for fix or implementation. Once the developer finishes the
-          task it automatically becomes a task for the Tester(s) to check. If we
-          pass that step too, then the Project Manager role can close it for
-          good. If something goes wrong in the proccess it can be easily
-          reassigned to the developer again.
+          {{ workFlowText }}
         </p>
       </div>
       <div class="col-lg-6 col-sm-12">
@@ -62,31 +51,13 @@
           Purpose of the app
         </h4>
         <p class="font-monospace text-justify">
-          This app was created by me (Panagiotis Chatziantoniou) for practice.
-          It's my first Vue project so go easy on me! The use of this app is for
-          demo purposes only. The initial problem was that in our organization
-          the issue management procedure was increasingly abandoned because of
-          the tool we used, which provided a poor UX and was quite bloated. So I
-          decided to create one tool that contains only the features we really
-          need with (IMHO) a better UX.
+          {{ purposeText }}
         </p>
         <h4 class="font-monospace text-decoration-underline">
           How the app works
         </h4>
         <p class="font-monospace text-justify">
-          First of all, it is (for the moment) designed to be used only by one
-          team. In order to use the app you must register with a valid email and
-          a password. Once you register, you can add your role you possess in
-          the team (Manager, Developer, Tester etc). Next step is to add all the
-          projects you want to manage with this app and assign roles to the
-          other users too. Each project has one Project Manager, one or many
-          Developers and Testers. After creating your first project feel free to
-          add tasks or issues to the project. Those can be assigned to
-          Developers for fix or implementation. Once the developer finishes the
-          task it automatically becomes a task for the Tester(s) to check. If we
-          pass that step too, then the Project Manager role can close it for
-          good. If something goes wrong in the proccess it can be easily
-          reassigned to the developer again.
+          {{ workFlowText }}
         </p>
         <h4 class="font-monospace text-decoration-underline">
           Tools &amp; Libraries used
@@ -113,26 +84,43 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { db } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import BaseSpinner from "@/components/base/BaseSpinner.vue";
 
 export default {
+  components: {
+    BaseSpinner,
+  },
   setup() {
     const showInColumns = ref(true);
-    const tools = ref([
-      "VueJS v3.2.13 (Composition API, Vue-router, Vuex)",
-      "Bootstrap v5.2.1",
-      "Firebase Authentication",
-      "Firestore Database",
-      "Firebase Storage (not implemented yet)",
-      "Visual Studio Code",
-    ]);
+    const showSpinner = ref(true);
+    const tools = ref([]);
+    const purposeText = ref("");
+    const workFlowText = ref("");
 
-    const toggle = () => showInColumns.value = !showInColumns.value;
+    const toggle = () => (showInColumns.value = !showInColumns.value);
+
+    onMounted(async () => {
+      const docRef = doc(db, "config", "MTzuHLRdks5OHnLXk0nM");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const snapData = docSnap.data();
+        purposeText.value = snapData.purposeText;
+        workFlowText.value = snapData.workFlowText;
+        tools.value = snapData.tools;
+      }
+      showSpinner.value = false;
+    });
 
     return {
+      purposeText,
+      workFlowText,
       showInColumns,
+      showSpinner,
       tools,
-      toggle
+      toggle,
     };
   },
 };

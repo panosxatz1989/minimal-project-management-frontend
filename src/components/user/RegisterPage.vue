@@ -5,6 +5,7 @@
         <div class="card shadow">
           <div class="card-body">
             <h2 class="text-center">Register Form</h2>
+            <base-spinner v-if="showSpinner"></base-spinner>
             <form @submit.prevent="register">
               <div class="mb-3">
                 <label class="label">Name</label>
@@ -70,7 +71,15 @@
               <div class="mb-3">
                 <label class="label">Repeat Password</label>
                 <div class="input-group">
-                  <span class="input-group-text fas fa-repeat register-icon border-end-0"></span>
+                  <span
+                    class="
+                      input-group-text
+                      fas
+                      fa-repeat
+                      register-icon
+                      border-end-0
+                    "
+                  ></span>
                   <input
                     type="password"
                     class="form-control border-start-0"
@@ -96,8 +105,12 @@
 import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import BaseSpinner from "@/components/base/BaseSpinner.vue";
 
 export default {
+  compontents: {
+    BaseSpinner,
+  },
   setup() {
     const user = reactive({
       email: "",
@@ -109,6 +122,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const registerError = ref("");
+    const showSpinner = ref(false);
 
     function removeErrors() {
       errors.value = [];
@@ -128,6 +142,7 @@ export default {
     }
 
     async function register() {
+      showSpinner.value = true;
       const isValid = validate();
       if (isValid) {
         try {
@@ -139,11 +154,13 @@ export default {
           router.push("/profile");
         } catch (err) {
           registerError.value = err.message;
+          showSpinner.value = false;
         }
       }
     }
 
     return {
+      showSpinner,
       user,
       passwordMatch,
       errors,

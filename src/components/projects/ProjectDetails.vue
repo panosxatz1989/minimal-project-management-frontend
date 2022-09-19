@@ -33,13 +33,14 @@
 
 <script>
 import { onMounted, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { db } from "@/firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 
 export default {
     setup() {
         const route = useRoute();
+        const router = useRouter();
         const projectId = route.params.projectId;
         const projectRef = doc(db, "projects", projectId);
         let project = reactive({});
@@ -59,6 +60,7 @@ export default {
         function deleteProject() {
             if (confirm("Are you sure you want to delete the project")) {
                 deleteDoc(projectRef);
+                router.push('/projects');
             }
         }
 

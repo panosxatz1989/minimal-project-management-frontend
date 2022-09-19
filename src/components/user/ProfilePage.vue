@@ -7,14 +7,6 @@
                         <h2 class="text-center">Edit Profile</h2>
                         <form @submit.prevent="updateProfile">
                             <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="profile.username"
-                                />
-                            </div>
-                            <div class="mb-3">
                                 <label class="form-label">Name</label>
                                 <input
                                     type="text"
@@ -83,14 +75,14 @@ export default {
             });
             profile.roles = roles;
 
-            const userRef = doc(db, "users", 'wgMzs7UlruNtvlPs0acm');
+            const userRef = doc(db, "users", "wgMzs7UlruNtvlPs0acm");
 
             await updateDoc(userRef, profile);
         }
 
         onMounted(async () => {
-            profile.roles?.forEach(el => {
-                let roleId = el.split('/').pop();
+            profile.roles?.forEach((el) => {
+                let roleId = el.split("/").pop();
                 selectedRoles.value.push(roleId);
             });
 

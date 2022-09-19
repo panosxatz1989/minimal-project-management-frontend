@@ -29,7 +29,8 @@ const routes = [
         path: "/profile",
         name: "profile",
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            transition: 'slide-right slow'
         },
         component: () => import("@/components/user/ProfilePage.vue"),
     },

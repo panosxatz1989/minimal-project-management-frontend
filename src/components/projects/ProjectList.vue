@@ -45,6 +45,7 @@ import { onMounted, ref } from "vue";
 import { collection, onSnapshot, addDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import BaseModal from "@/components/base/BaseModal.vue";
+import BaseSpinner from "@/components/base/BaseSpinner.vue";
 
 export default {
   setup() {
@@ -88,6 +89,7 @@ export default {
   },
   components: {
     BaseModal,
+    BaseSpinner
   },
 };
 </script>

@@ -51,6 +51,24 @@ const routes = [
         component: () => import("@/components/projects/ProjectDetails.vue"),
         props: true,
     },
+    {
+        path: "/projects/:projectId/issues",
+        name: "projectIssues",
+        meta: {
+            requiresAuth: true
+        },
+        component: () => import("@/components/issues/IssueList.vue"),
+        props: true
+    },
+    {
+        path: "/projects/:projectId/issues/add",
+        name: "projectIssuesAddition",
+        meta: {
+            requiresAuth: true
+        },
+        component: () => import("@/components/issues/CreateIssue.vue"),
+        props: true
+    }
 ];
 
 const router = createRouter({

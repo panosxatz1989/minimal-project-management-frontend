@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <router-link class="navbar-brand" :to="{ name: 'home' }">
-        <img src="@/assets/main-logo.svg" alt="Logo" width="30" height="30">
+        <img src="@/assets/main-logo.svg" alt="Logo" width="30" height="30" />
         {{ name }}
         <sup
           >{{ step }}

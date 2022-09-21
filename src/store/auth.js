@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/firebase";
-import useError from "@/components/hooks/error";
+import useError from "@/components/hooks/use-error";
 
 const state = {
     profile: {},

@@ -2,8 +2,8 @@
   <div class="container mt-5">
     <base-spinner v-if="showSpinner"></base-spinner>
     <div class="row" v-if="!showSpinner">
-      <div class="col-lg-2">
-        <button @click="toggle" class="btn btn-secondary mb-2">
+      <div class="col-lg-3">
+        <button @click="toggle" class="btn btn-secondary mb-2 font-monospace">
           Toggle Different View
         </button>
       </div>
@@ -38,7 +38,7 @@
         </ul>
         <a
           href="https://github.com/panosxatz1989/internal-project-management"
-          class="text-white btn btn-info mt-2"
+          class="text-white btn btn-info mt-2 font-monospace"
           target="_blank"
         >
           Explore project in GitHub <i class="fa-brands fa-github"></i>

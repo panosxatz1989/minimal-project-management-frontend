@@ -10,7 +10,7 @@
       </button>
     </div>
   </div>
-  <base-modal @addProject="addProject">
+  <base-modal>
     <template v-slot:header>Add New Project</template>
     <template v-slot:body>
       <new-project></new-project>
@@ -19,29 +19,13 @@
 </template>
 
 <script>
-import { db } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
 import BaseModal from "@/components/base/BaseModal.vue";
 import NewProject from "@/components/projects/NewProject.vue";
 
 export default {
-  setup() {
-    async function addProject(data) {
-      if (data.name === "") return;
-      await addDoc(collection(db, "projects"), {
-        name: data.name,
-        description: data.description,
-      });
-    }
-    return {
-      addProject,
-    };
-  },
   components: {
     BaseModal,
     NewProject,
   },
 };
 </script>
-
-<style></style>

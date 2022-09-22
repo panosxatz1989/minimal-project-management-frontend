@@ -41,7 +41,7 @@ import { onMounted, ref } from "vue";
 import { onSnapshot } from "firebase/firestore";
 import BaseSpinner from "@/components/base/BaseSpinner.vue";
 import CreateProject from "@/components/projects/CreateProject.vue";
-import useRef from "@/components/hooks/use-refs";
+import useRef from "@/hooks/use-refs";
 
 export default {
   setup() {

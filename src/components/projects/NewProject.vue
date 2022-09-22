@@ -28,7 +28,7 @@
 <script>
 import { onMounted, ref } from "vue";
 import { addDoc, query, where, getDocs } from "firebase/firestore";
-import useRef from "@/components/hooks/use-refs";
+import useRef from "@/hooks/use-refs";
 
 export default {
   setup() {

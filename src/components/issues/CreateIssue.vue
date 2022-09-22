@@ -12,7 +12,12 @@
                   <label class="form-label"
                     >Title<span class="text-danger">&nbsp;*</span></label
                   >
-                  <input type="text" class="form-control" v-model="selectedTitle" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="selectedTitle"
+                    required
+                  />
                 </div>
               </div>
               <div class="row">
@@ -25,6 +30,7 @@
                     rows="5"
                     class="form-control"
                     v-model="selectedDescription"
+                    required
                   >
                   </textarea>
                 </div>
@@ -34,10 +40,7 @@
                   <label class="form-label"
                     >Priority<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedPriority"
-                  >
+                  <select class="form-select" v-model="selectedPriority">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -53,10 +56,7 @@
                   <label class="form-label"
                     >Issue Type<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedIssueType"
-                  >
+                  <select class="form-select" v-model="selectedIssueType">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -72,10 +72,7 @@
                   <label class="form-label"
                     >Status<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedStatus"
-                  >
+                  <select class="form-select" v-model="selectedStatus">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -93,10 +90,7 @@
                   <label class="form-label"
                     >Assign To<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedUser"
-                  >
+                  <select class="form-select" v-model="selectedUser">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -128,7 +122,7 @@ import { onMounted } from "@vue/runtime-core";
 import { getDocs, query, orderBy, addDoc } from "firebase/firestore";
 import { ref } from "vue";
 import BaseSpinner from "@/components/base/BaseSpinner.vue";
-import useRef from "@/components/hooks/use-refs";
+import useRef from "@/hooks/use-refs";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
@@ -146,7 +140,7 @@ export default {
     const selectedIssueType = ref(-1);
     const selectedStatus = ref(-1);
     const selectedUser = ref(-1);
-    
+
     onMounted(async () => {
       // load priorities
       let q = query(useRef("priorities"), orderBy("order", "asc"));
@@ -206,7 +200,7 @@ export default {
     async function createIssue() {
       await addDoc(useRef("issues"), {
         projectId: route.params.projectId,
-        title: selectedTitle.value,        
+        title: selectedTitle.value,
         description: selectedDescription.value,
         priority: selectedPriority.value,
         issueType: selectedIssueType.value,
@@ -214,10 +208,10 @@ export default {
         assignedTo: selectedUser.value,
         devFix: false,
         prodFix: false,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       });
 
-      router.push('/projects/' + route.params.projectId);
+      router.push("/projects/" + route.params.projectId);
     }
 
     return {
@@ -240,5 +234,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

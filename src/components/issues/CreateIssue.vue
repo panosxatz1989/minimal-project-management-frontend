@@ -16,10 +16,7 @@
                     type="text"
                     class="form-control"
                     v-model="selectedTitle"
-<<<<<<< HEAD
-=======
                     required
->>>>>>> 954ee40ce8315aa8dc07c0afda1288ec8bede193
                   />
                 </div>
               </div>

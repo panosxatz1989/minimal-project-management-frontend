@@ -18,7 +18,8 @@ export default {
 </script>
 <style>
 * {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    /* font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; */
+    font-family: Arial;
 }
 
 .btn-min-width {

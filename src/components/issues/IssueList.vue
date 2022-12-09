@@ -3,7 +3,7 @@
     <div class="card-header">
       <h2 class="text-center">Issues</h2>
       <router-link
-        class="btn btn-warning"
+        class="btn btn-warning text-white"
         :to="{
           name: 'projectIssuesAddition',
         }"

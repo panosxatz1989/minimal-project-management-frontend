@@ -12,7 +12,11 @@
                   <label class="form-label"
                     >Title<span class="text-danger">&nbsp;*</span></label
                   >
-                  <input type="text" class="form-control" v-model="selectedTitle" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="selectedTitle"
+                  />
                 </div>
               </div>
               <div class="row">
@@ -34,10 +38,7 @@
                   <label class="form-label"
                     >Priority<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedPriority"
-                  >
+                  <select class="form-select" v-model="selectedPriority">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -53,10 +54,7 @@
                   <label class="form-label"
                     >Issue Type<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedIssueType"
-                  >
+                  <select class="form-select" v-model="selectedIssueType">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -72,10 +70,7 @@
                   <label class="form-label"
                     >Status<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedStatus"
-                  >
+                  <select class="form-select" v-model="selectedStatus">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -93,10 +88,7 @@
                   <label class="form-label"
                     >Assign To<span class="text-danger">&nbsp;*</span></label
                   >
-                  <select
-                    class="form-select"
-                    v-model="selectedUser"
-                  >
+                  <select class="form-select" v-model="selectedUser">
                     <option value="-1">- Choose -</option>
                     <option
                       class="font-monospace"
@@ -146,7 +138,7 @@ export default {
     const selectedIssueType = ref(-1);
     const selectedStatus = ref(-1);
     const selectedUser = ref(-1);
-    
+
     onMounted(async () => {
       // load priorities
       let q = query(useRef("priorities"), orderBy("order", "asc"));
@@ -192,12 +184,12 @@ export default {
       // load users
       querySnapshot = await getDocs(useRef("users"));
       let fsUsers = [];
-      querySnapshot.forEach((el) => {
+      querySnapshot.forEach(async (el) => {
         const user = {
           id: el.id,
           name: el.data().name,
-          roles: el.data().roles.join(", "),
-        };
+          roles: el.data().roles,
+        };        
         fsUsers.push(user);
       });
       users.value = fsUsers;
@@ -206,7 +198,7 @@ export default {
     async function createIssue() {
       await addDoc(useRef("issues"), {
         projectId: route.params.projectId,
-        title: selectedTitle.value,        
+        title: selectedTitle.value,
         description: selectedDescription.value,
         priority: selectedPriority.value,
         issueType: selectedIssueType.value,
@@ -214,10 +206,10 @@ export default {
         assignedTo: selectedUser.value,
         devFix: false,
         prodFix: false,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       });
 
-      router.push('/projects/' + route.params.projectId);
+      router.push("/projects/" + route.params.projectId);
     }
 
     return {

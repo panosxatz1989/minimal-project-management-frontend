@@ -16,6 +16,10 @@
                     type="text"
                     class="form-control"
                     v-model="selectedTitle"
+<<<<<<< HEAD
+=======
+                    required
+>>>>>>> 954ee40ce8315aa8dc07c0afda1288ec8bede193
                   />
                 </div>
               </div>
@@ -29,6 +33,7 @@
                     rows="5"
                     class="form-control"
                     v-model="selectedDescription"
+                    required
                   >
                   </textarea>
                 </div>
@@ -120,7 +125,7 @@ import { onMounted } from "@vue/runtime-core";
 import { getDocs, query, orderBy, addDoc } from "firebase/firestore";
 import { ref } from "vue";
 import BaseSpinner from "@/components/base/BaseSpinner.vue";
-import useRef from "@/components/hooks/use-refs";
+import useRef from "@/hooks/use-refs";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
@@ -232,5 +237,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

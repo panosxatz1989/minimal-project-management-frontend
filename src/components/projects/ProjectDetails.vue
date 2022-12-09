@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="card">
           <div class="card-body">
             <h2 class="text-center">{{ project.name }}</h2>
@@ -24,7 +24,7 @@
           >Back</router-link
         >
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-9">
         <issue-list></issue-list>
       </div>
     </div>

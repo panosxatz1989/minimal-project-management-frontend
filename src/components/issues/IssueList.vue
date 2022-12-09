@@ -18,8 +18,8 @@
         <div class="col-lg-12" v-if="issueList.length > 0">
           <div class="card mb-3" v-for="issue in issueList" :key="issue.id">
             <div class="card-body">
-              <h5>{{ issue.title }}</h5>
-              <p>{{ issue.description }}</p>
+              <h5 class="card-title">{{ issue.title }} <small>({{ issue.createdAt }})</small></h5>
+              <p class="card-text">{{ issue.description }}</p>
             </div>
           </div>
         </div>
@@ -53,7 +53,8 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import useRef from "@/components/hooks/use-refs";
+import useRef from "@/hooks/use-refs";
+import useDate from "@/hooks/use-date";
 import { onSnapshot } from "@firebase/firestore";
 
 export default {
@@ -71,7 +72,7 @@ export default {
             title: data.title,
             description: data.description,
             assignedTo: data.assignedTo,
-            createdAt: data.createdAt,
+            createdAt: useDate(data.createdAt),
           };
           fsIssues.push(issue);
         });

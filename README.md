@@ -1,4 +1,4 @@
-# internal-project-management
+# minimal-project-management
 
 ## Project setup
 ```
